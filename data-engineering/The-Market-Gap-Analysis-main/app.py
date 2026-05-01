@@ -25,7 +25,10 @@ h1, h2, h3 { font-family: "Helvetica Neue", sans-serif; color: #111; }
 # ---------------------------
 @st.cache_data
 def load_data():
-    df = pd.read_csv("openfoodfacts_clean.csv.gz", compression="gzip")
+    df = pd.read_csv(
+    "data-engineering/The-Market-Gap-Analysis-main/openfoodfacts_clean.csv.gz",
+    compression="gzip"
+)
 
     df["product_name"] = df["product_name"].fillna("Unknown")
     df["primary_category"] = df["primary_category"].fillna("Other")
