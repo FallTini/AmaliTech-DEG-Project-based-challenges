@@ -14,7 +14,7 @@ The analysis reveals that Dairy, Condiments, and Cereals represent the strongest
 
 - **Link to Notebook:** https://colab.research.google.com/drive/1rsfd81DzzqhbdekgYG0D6P22qJFjF1dC?usp=sharing
 
-- **Link to Dashboard:** 
+- **Link to Dashboard:** https://m5qtcryfxxj6sciiyoykul.streamlit.app/
 
 - **Link to Presentation:** https://docs.google.com/presentation/d/1pWLlRLt0Y1VhbIJwbdo1yc1VEAQ1HLOm/edit?usp=sharing&ouid=117936114877771029434&rtpof=true&sd=true
   - Slide Deck (PDF/PPT): 
