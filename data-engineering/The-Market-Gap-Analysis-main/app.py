@@ -25,7 +25,7 @@ h1, h2, h3 { font-family: "Helvetica Neue", sans-serif; color: #111; }
 # ---------------------------
 @st.cache_data
 def load_data():
-    df = pd.read_csv("openfoodfacts_clean.csv")
+    df = pd.read_csv("openfoodfacts_clean.csv.gz")
 
     df["product_name"] = df["product_name"].fillna("Unknown")
     df["primary_category"] = df["primary_category"].fillna("Other")
