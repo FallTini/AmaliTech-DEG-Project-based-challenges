@@ -1,3 +1,69 @@
+# Sugar Trap Market Gap Analysis
+
+**Client:** Helix CPG Partners  
+**Deliverable:** Interactive Dashboard + Analysis + Insights  
+
+
+
+## A. Executive Summary
+
+Analysis of 499,684 food products from the Open Food Facts dataset reveals a structurally underserved segment in the global snack market: **high-protein, low-sugar products remain significantly underrepresented across all major food categories**. While the majority of products cluster in the high-sugar, low-protein quadrant, fewer than 10% of named-category products meet the threshold of ≥10g protein and <5g sugar per 100g. The strongest opportunity lies in the **Meat & Fish, Dairy, and Snacks** categories, where consumer demand for functional, health-oriented products is growing but current supply remains limited. We recommend that R&D teams prioritize developing snack products leveraging high-protein ingredients such as whey, nuts, and plant-based proteins to capture this Blue Ocean.
+
+---
+
+## B. Project Links
+
+| Deliverable | Link |
+|---|---|
+| 📓 Notebook (Google Colab) | _[Add your Colab link here]_ |
+| 📊 Dashboard (Streamlit Cloud) | _[Add your Streamlit link here]_ |
+| 📑 Presentation (PDF/PPT) | _[Add your slide deck link here]_ |
+| 🎥 Video Walkthrough (Optional) | _[Add your YouTube link here]_ |
+
+> ⚠️ All links tested in Incognito Mode to verify public accessibility.
+
+---
+
+## C. Technical Explanation
+
+### Data Cleaning (Story 1)
+
+The raw Open Food Facts dataset was ingested in chunks of 100,000 rows via a streaming approach to avoid memory overflow, targeting a working subset of 500,000 rows. During ingestion, rows with missing values in the three critical columns `sugars_100g`, `proteins_100g`, and `product_name`  were immediately dropped, as these are non-negotiable for the analysis.
+
+For secondary columns, a fill strategy was applied rather than dropping:
+- `categories_tags` → filled with `"unknown"` (61.5% missing — dropping would have eliminated too many rows)
+- `ingredients_text` → filled with `"unknown"` (75.6% missing — only used in the Bonus story)
+- `fat_100g` → filled with `0` (0.3% missing — negligible impact)
+
+Outlier removal targeted biologically impossible nutritional values: any product reporting sugar, protein, or fat outside the 0–100g per 100g range was excluded, removing a small but impactful set of erroneous entries.
+
+### Category Wrangler (Story 2)
+
+The `categories_tags` column was parsed by splitting on commas, then all language prefixes (`en:`, `fr:`, `de:`, `es:`, etc.) were stripped using a regex pattern `re.sub(r"^[a-z]{2}:", "", tag)` a critical fix, as the original approach of only stripping `en:` left French and Spanish tags unmatched, inflating the "Other" bucket to over 50%.
+
+A keyword-based classifier assigned each product to one of **9 high-level buckets**: Snacks, Beverages, Dairy, Meat & Fish, Bakery, Cereals, Sweets, Produce, and Condiments. A two-pass approach was used: the first pass classified using `categories_tags`, and a second pass re-ran classification on remaining "Other" products using `product_name` as a fallback signal. This reduced the "Other" bucket from 51% to 34%, with the residual being genuinely unclassifiable products (93% of remaining "Other" had no category tags at all).
+
+### Candidate's Choice - Market Size vs Opportunity Rate Bubble Chart
+
+A bubble chart was added combining two dimensions: **category size** (number of products, shown as bubble size) and **opportunity rate** (% of products meeting the high-protein, low-sugar threshold, on the Y-axis).
+
+**Why this matters:** Opportunity rate alone is misleading. A niche category with an 80% opportunity rate but only 200 products is far less actionable for a global manufacturer than a large category with a 40% rate and 50,000 products. This chart allows the R&D team to prioritize investment by **both scale and whitespace simultaneously** surfacing categories where the gap is large *and* the market is worth entering. This is a direct translation of Blue Ocean Strategy thinking into a single visual.
+
+---
+
+## Technical Stack
+
+| Tool | Purpose |
+|---|---|
+| Python / Pandas | Data ingestion, cleaning, classification |
+| Google Colab | Cloud notebook environment (reproducible) |
+| Plotly / Streamlit | Interactive dashboard |
+| Open Food Facts | Primary dataset source |
+
+---
+
+
+
 # Project Brief: The "Sugar Trap" Market Gap Analysis
 
 **Client:** Helix CPG Partners (Strategic Food & Beverage Consultancy)
